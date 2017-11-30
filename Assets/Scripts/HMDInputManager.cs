@@ -1,19 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class HMDInputManager : MonoBehaviour {
 
     public PhotographManager photoManager;
 
+    public Transform SpawnTransform;
+
     //When space is pressed, the material will appear, with a
     //snapshot from the webcam.
     void Update()
     {
-        //In the future this will be replaced with gaze detection and a timer
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetMouseButtonDown(0))
         {
-            photoManager.TakePicture(this.transform);
+            photoManager.TakePicture(SpawnTransform);
         }
     }
 }

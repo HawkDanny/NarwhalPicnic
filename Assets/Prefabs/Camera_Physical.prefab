@@ -20,9 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4328092593372426}
   - component: {fileID: 20953424933324046}
-  - component: {fileID: 124632088788679980}
-  - component: {fileID: 92498182125895974}
-  - component: {fileID: 81762115464410324}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -186,6 +183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4606386701514352}
   - component: {fileID: 95701362713822926}
+  - component: {fileID: 111535631205334828}
   m_Layer: 0
   m_Name: Camera_Physical
   m_TagString: Untagged
@@ -265,7 +263,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1958975751153850}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -0.0017562, y: -0.00088758, z: 0.21}
+  m_LocalPosition: {x: 0, y: 0, z: 0.21}
   m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_Children:
   - {fileID: 4803215524896378}
@@ -446,20 +444,6 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!81 &81762115464410324
-AudioListener:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1187135296310916}
-  m_Enabled: 1
---- !u!92 &92498182125895974
-Behaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1187135296310916}
-  m_Enabled: 1
 --- !u!95 &95701362713822926
 Animator:
   serializedVersion: 3
@@ -469,7 +453,7 @@ Animator:
   m_GameObject: {fileID: 1958975751153850}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 71e1074814a6a354ebcee24255af1ee7, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f402cb58c2cead341982e3a077452a00, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -477,6 +461,20 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!111 &111535631205334828
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1958975751153850}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 4ec31309e168278448b6b9acf11f8faa, type: 2}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!114 &114339609803801522
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -573,13 +571,6 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!124 &124632088788679980
-Behaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1187135296310916}
-  m_Enabled: 1
 --- !u!222 &222215816817640478
 CanvasRenderer:
   m_ObjectHideFlags: 1

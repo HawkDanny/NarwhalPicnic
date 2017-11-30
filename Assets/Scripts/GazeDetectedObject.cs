@@ -24,11 +24,13 @@ public class GazeDetectedObject : MonoBehaviour
         screenSpacePos.y /= screenSpacePos.w;
         screenSpacePos.z /= screenSpacePos.w;
 
+        /*
         //Call either StartShot or AbandonShot every frame
         if (IsInCenterView(screenSpacePos))
             photoManager.StartShot();
         else
             photoManager.AbandonShot();   
+        */
     }
 
     private bool IsInCenterView(Vector3 screenSpacePos)
