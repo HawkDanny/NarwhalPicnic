@@ -1,15 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
     public enum Scenario
     {
         Idle,
-        Tutorial,
         Party,
-        Construction
+        Construction,
+        Phone
     }
 
     //Managers
@@ -17,9 +18,19 @@ public class GameManager : MonoBehaviour {
     public PartyManager partyMan;
     public ConstructionManager constructionMan;
     public VRManager vrMan;
+    public PhoneManager phoneMan;
 
     //The current state of the game
     public Scenario currentScenario;
+    private Scenario lastNonIdleScenario;
+
+    //Idle instructions
+    public Instructions idleInstructions;
+
+    //Things needed to set the monitor instructions
+    public Camera monitorCamera;
+    public GameObject textGO;
+    public GameObject shadowGO;
 
 
     //Set up the first scenario
@@ -32,16 +43,18 @@ public class GameManager : MonoBehaviour {
     //TEMPORARILY HANDLE INPUT
     void Update()
     {
-        //Draw lines on the corners of the boundaries
-        Debug.DrawLine(vrMan.Corner0, new Vector3(vrMan.Corner0.x, vrMan.Corner0.y + 1, vrMan.Corner0.z), Color.cyan);
-        Debug.DrawLine(vrMan.Corner1, new Vector3(vrMan.Corner1.x, vrMan.Corner1.y + 1, vrMan.Corner1.z), Color.cyan);
-        Debug.DrawLine(vrMan.Corner2, new Vector3(vrMan.Corner2.x, vrMan.Corner2.y + 1, vrMan.Corner2.z), Color.cyan);
-        Debug.DrawLine(vrMan.Corner3, new Vector3(vrMan.Corner3.x, vrMan.Corner3.y + 1, vrMan.Corner3.z), Color.cyan);
-
         if (Input.GetKeyDown(KeyCode.Alpha1))
             RunScenario(Scenario.Party);
         if (Input.GetKeyDown(KeyCode.Alpha2))
             RunScenario(Scenario.Construction);
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+            RunScenario(Scenario.Phone);
+
+        //When a scenario is complete, go back to idle
+        if (IsScenarioComplete(currentScenario))
+        {
+            //RunScenario(Scenario.Idle);
+        }
     }
 
     //Runs the appropriate scenario within the corresponding manager
@@ -51,30 +64,34 @@ public class GameManager : MonoBehaviour {
 
         switch (nextScenario) {
             case Scenario.Idle:
-                break;
-            case Scenario.Tutorial:
-                //tutorialMan.Run();
+                SetInstructions(idleInstructions);
                 break;
             case Scenario.Party:
-                partyMan.Run();
+                partyMan.Run(vrMan);
+                SetInstructions(partyMan.instructions);
                 break;
             case Scenario.Construction:
                 constructionMan.Run();
+                SetInstructions(constructionMan.instructions);
+                break;
+            case Scenario.Phone:
+                phoneMan.Run();
+                SetInstructions(phoneMan.instructions);
                 break;
         }
 
         currentScenario = nextScenario;
     }
 
-    //Stops the current scenario
+    //Stops the current scenario and updates lastNonIdleScenario
     private void StopScenario(Scenario currentScenario) 
     {
+        if (currentScenario != Scenario.Idle)
+            lastNonIdleScenario = currentScenario;
+
         switch (currentScenario)
         {
             case Scenario.Idle:
-                break;
-            case Scenario.Tutorial:
-                //tutorialMan.Stop();
                 break;
             case Scenario.Party:
                 partyMan.Stop();
@@ -82,6 +99,59 @@ public class GameManager : MonoBehaviour {
             case Scenario.Construction:
                 constructionMan.Stop();
                 break;
+            case Scenario.Phone:
+                phoneMan.Stop();
+                break;
         }
+    }
+
+    private bool IsScenarioComplete(Scenario currentScenario)
+    {
+        switch (currentScenario)
+        {
+            case Scenario.Idle:
+                return false; //This is controlled by photomanager
+            case Scenario.Party:
+                if (partyMan.poppedBalloons >= partyMan.numBalloons)
+                    return true;
+                else
+                    return false;
+            case Scenario.Construction:
+                if (constructionMan.isDemolished)
+                    return true;
+                else
+                    return false;
+            case Scenario.Phone:
+                if (phoneMan.answeredPhone)
+                    return true;
+                else
+                    return false;
+            default:
+                return false;
+        }
+    }
+
+    //Run the next real scenario
+    public void RunNextScenario()
+    {
+        if (lastNonIdleScenario + 1 == Scenario.Idle)
+            RunScenario(lastNonIdleScenario + 2);
+        else
+            RunScenario(lastNonIdleScenario + 1);
+    }
+
+    /// <summary>
+    /// Sets the instructions of the monitor according to the scene manager's Instructions object
+    /// </summary>
+    /// <param name="inst">The scene manager's Instructions objects</param>
+    private void SetInstructions(Instructions inst)
+    {
+        monitorCamera.backgroundColor = inst.backgroundColor;
+        Text text = textGO.GetComponent<Text>();
+        Text shadow = shadowGO.GetComponent<Text>();
+        text.color = inst.textColor;
+        text.text = inst.text;
+        shadow.color = inst.shadowColor;
+        shadow.text = inst.text;
     }
 }

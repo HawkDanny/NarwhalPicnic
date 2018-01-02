@@ -6,6 +6,13 @@ TagManager:
   tags:
   - Ground
   - wrecking
+  - Balloon
+  - GameManager
+  - Phone
+  - Answer
+  - Narwhal
+  - Trigger
+  - Tip
   layers:
   - Default
   - TransparentFX
